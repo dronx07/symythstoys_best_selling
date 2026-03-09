@@ -69,6 +69,7 @@ class ProductRunner:
     async def get_total_pages(self, url):
         page = await self.context.new_page()
         await page.goto(url, wait_until="load")
+        await asyncio.sleep(30)
         selector = "div.text-body-30.text-grey-700.whitespace-nowrap.my-5.md:my-0"
         await page.wait_for_selector(selector)
         text = await page.locator(selector).inner_text()
@@ -90,7 +91,7 @@ class ProductRunner:
         page = await self.context.new_page()
         try:
             await page.goto(url, wait_until="load")
-            await asyncio.sleep(10)
+            await asyncio.sleep(30)
             await page.wait_for_selector("a.cursor-pointer.flex.flex-col.flex-grow.pb-3")
             locator = page.locator("a.cursor-pointer.flex.flex-col.flex-grow.pb-3")
             hrefs = await locator.evaluate_all("els => els.map(e => e.getAttribute('href'))")
@@ -114,7 +115,7 @@ class ProductRunner:
         page = await self.context.new_page()
         try:
             await page.goto(url, wait_until="load")
-            #await asyncio.sleep(10)
+            await asyncio.sleep(10)
             name = await page.locator("h1").inner_text()
             price_text = await page.locator("div.flex.flex-wrap.items-start.text-red-400.font-bold.shrink-0.mr-2.ios-price").inner_text()
             price = float(price_text.replace("€", "").replace(",", ".").strip())
