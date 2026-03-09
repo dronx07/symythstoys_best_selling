@@ -69,7 +69,7 @@ class ProductRunner:
     async def get_total_pages(self, url):
         page = await self.context.new_page()
         await page.goto(url, wait_until="load")
-        selector = "div.text-body-30.text-grey-700.whitespace-nowrap.my-5.md\\:my-0"
+        selector = "div.text-body-30.text-grey-700.whitespace-nowrap.my-5.md:my-0"
         await page.wait_for_selector(selector)
         text = await page.locator(selector).inner_text()
         total_products = int(re.search(r"\d+", text.replace(",", "")).group())
