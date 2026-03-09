@@ -27,6 +27,8 @@ class ProductRunner:
         self.state_file = Path("category_state.json")
         self.min_delay = min_delay
         self.max_delay = max_delay
+        self.screenshot_dir = Path("debug_screenshots")
+        self.screenshot_dir.mkdir(exist_ok=True)
 
     async def start(self):
         logger.info("Starting browser")
@@ -78,7 +80,7 @@ class ProductRunner:
             return total_pages
         except Exception as e:
             logger.error(f"Failed to get total pages for {url}: {e}")
-            await page.screenshot(path="debug_total_pages.png", full_page=True)
+            await page.screenshot(path=self.screenshot_dir / "debug_total_pages.png", full_page=True)
             return 1
         finally:
             await page.close()
@@ -109,7 +111,7 @@ class ProductRunner:
             logger.info(f"Page {page_number} collected {added} new product URLs")
         except Exception as e:
             logger.error(f"Error collecting page {page_number} {url}: {e}")
-            await page.screenshot(path=f"debug_page_{page_number}.png", full_page=True)
+            await page.screenshot(path=self.screenshot_dir / f"debug_page_{page_number}.png", full_page=True)
         finally:
             await page.close()
             delay = random.uniform(self.min_delay, self.max_delay)
@@ -136,7 +138,7 @@ class ProductRunner:
             logger.info(f"Scraped product {gtin} from {url}")
         except Exception as e:
             logger.error(f"Error scraping product {url}: {e}")
-            await page.screenshot(path=f"debug_product.png", full_page=True)
+            await page.screenshot(path=self.screenshot_dir / "debug_product.png", full_page=True)
         finally:
             await page.close()
             delay = random.uniform(self.min_delay, self.max_delay)
