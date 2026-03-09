@@ -33,7 +33,11 @@ class ProductRunner:
     async def start(self):
         logger.info("Starting browser")
         self.playwright = await async_playwright().start()
-        self.browser = await self.playwright.chromium.launch(headless=self.headless, args=self.args)
+        self.browser = await self.playwright.chromium.launch(headless=self.headless, args=self.args, proxy={
+            "server": "dc.oxylabs.io:8000",
+            "username": "Maze54_hytBx",
+            "password": "y8OP0IwvQ8e7H+"
+        })
         self.context = await self.browser.new_context(viewport={"width": 1920, "height": 1080})
         logger.info("Browser started")
 
